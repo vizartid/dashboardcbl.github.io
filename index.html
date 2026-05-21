@@ -485,7 +485,7 @@
             return <canvas id={chartId} style={{ width: '100%', height: '100%' }}></canvas>;
         };
 
-       const AreaChart = ({ data, chartId }) => {
+const AreaChart = ({ data, chartId }) => {
     useEffect(() => {
         const timer = setTimeout(() => {
             const bucketSize = Math.max(1, Math.floor(data.length / 6));
@@ -536,9 +536,17 @@
                     },
                     scales: {
                         y: {
-                            stacked: false, // <-- UBAH DI SINI: nonaktifkan fitur stacked
+                            stacked: false,
+                            max: 8, // <-- TAMBAHKAN DI SINI: Batas maksimal Y-axis
                             grid: { color: '#33415555' },
-                            ticks: { color: '#94a3b8', font: { size: 11 } }
+                            ticks: { 
+                                color: '#94a3b8', 
+                                font: { size: 11 },
+                                // <-- TAMBAHKAN DI SINI: Format agar selalu tampil desimal .0
+                                callback: function(value) {
+                                    return value.toFixed(1);
+                                }
+                            }
                         },
                         x: {
                             grid: { display: false },
