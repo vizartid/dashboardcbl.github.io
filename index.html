@@ -485,78 +485,78 @@
             return <canvas id={chartId} style={{ width: '100%', height: '100%' }}></canvas>;
         };
 
-        const AreaChart = ({ data, chartId }) => {
-            useEffect(() => {
-                const timer = setTimeout(() => {
-                    const bucketSize = Math.max(1, Math.floor(data.length / 6));
-                    const buckets = [];
-                    for (let i = 0; i < data.length; i += bucketSize) {
-                        const slice = data.slice(i, i + bucketSize);
-                        buckets.push({
-                            label: `${i+1}-${Math.min(i+bucketSize, data.length)}`,
-                            laki: slice.filter(r => r.jenis_kelamin === 'Laki-laki').length,
-                            perempuan: slice.filter(r => r.jenis_kelamin === 'Perempuan').length
-                        });
-                    }
+       const AreaChart = ({ data, chartId }) => {
+    useEffect(() => {
+        const timer = setTimeout(() => {
+            const bucketSize = Math.max(1, Math.floor(data.length / 6));
+            const buckets = [];
+            for (let i = 0; i < data.length; i += bucketSize) {
+                const slice = data.slice(i, i + bucketSize);
+                buckets.push({
+                    label: `${i+1}-${Math.min(i+bucketSize, data.length)}`,
+                    laki: slice.filter(r => r.jenis_kelamin === 'Laki-laki').length,
+                    perempuan: slice.filter(r => r.jenis_kelamin === 'Perempuan').length
+                });
+            }
 
-                    createChart(chartId, {
-                        type: 'line',
-                        data: {
-                            labels: buckets.map(b => b.label),
-                            datasets: [
-                                {
-                                    label: 'Laki-laki',
-                                    data: buckets.map(b => b.laki),
-                                    borderColor: '#3b82f6',
-                                    backgroundColor: 'rgba(59, 130, 246, 0.3)',
-                                    fill: true,
-                                    tension: 0.4,
-                                },
-                                {
-                                    label: 'Perempuan',
-                                    data: buckets.map(b => b.perempuan),
-                                    borderColor: '#ec4899',
-                                    backgroundColor: 'rgba(236, 72, 153, 0.3)',
-                                    fill: true,
-                                    tension: 0.4,
-                                }
-                            ]
+            createChart(chartId, {
+                type: 'line',
+                data: {
+                    labels: buckets.map(b => b.label),
+                    datasets: [
+                        {
+                            label: 'Laki-laki',
+                            data: buckets.map(b => b.laki),
+                            borderColor: '#3b82f6',
+                            backgroundColor: 'rgba(59, 130, 246, 0.3)',
+                            fill: true,
+                            tension: 0.4,
                         },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: { labels: { color: '#94a3b8' } },
-                                tooltip: {
-                                    backgroundColor: 'rgba(15, 23, 42, 0.9)',
-                                    bodyColor: '#e2e8f0',
-                                    borderColor: '#334155',
-                                    borderWidth: 1,
-                                }
-                            },
-                            scales: {
-                                y: {
-                                    stacked: true,
-                                    grid: { color: '#33415555' },
-                                    ticks: { color: '#94a3b8', font: { size: 11 } }
-                                },
-                                x: {
-                                    grid: { display: false },
-                                    ticks: { color: '#94a3b8', font: { size: 10 } }
-                                }
-                            }
+                        {
+                            label: 'Perempuan',
+                            data: buckets.map(b => b.perempuan),
+                            borderColor: '#ec4899',
+                            backgroundColor: 'rgba(236, 72, 153, 0.3)',
+                            fill: true,
+                            tension: 0.4,
                         }
-                    });
-                }, 100);
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { labels: { color: '#94a3b8' } },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 23, 42, 0.9)',
+                            bodyColor: '#e2e8f0',
+                            borderColor: '#334155',
+                            borderWidth: 1,
+                        }
+                    },
+                    scales: {
+                        y: {
+                            stacked: false, // <-- UBAH DI SINI: nonaktifkan fitur stacked
+                            grid: { color: '#33415555' },
+                            ticks: { color: '#94a3b8', font: { size: 11 } }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#94a3b8', font: { size: 10 } }
+                        }
+                    }
+                }
+            });
+        }, 100);
 
-                return () => {
-                    clearTimeout(timer);
-                    destroyChart(chartId);
-                };
-            }, [data, chartId]);
-
-            return <canvas id={chartId} style={{ width: '100%', height: '100%' }}></canvas>;
+        return () => {
+            clearTimeout(timer);
+            destroyChart(chartId);
         };
+    }, [data, chartId]);
+
+    return <canvas id={chartId} style={{ width: '100%', height: '100%' }}></canvas>;
+};
 
         // ==================== FILTER ====================
         const Filters = ({ data, filters, setFilters, columns }) => {
